@@ -4,10 +4,13 @@ A simple Arduino GIGA app that connects to Wi‑Fi, pulls recent MLB game data f
 
 ## What this app does
 - Connects to your Wi‑Fi network
-- Fetches MLB games from the last 7 days from `statsapi.mlb.com`
+- Fetches recent MLB games from the `statsapi.mlb.com` API over plain HTTP
 - Parses the schedule JSON
 - Displays the most recent games on the GIGA display
 - Shows team abbreviations and scores with game status
+
+## Important note for Arduino GIGA
+The Arduino GIGA R1 WiFi does not support `WiFiClientSecure`, so this project uses plain HTTP on port 80 instead of HTTPS. This is compatible with the board’s Wi‑Fi stack and is the correct approach for this hardware.
 
 ## Hardware
 - Arduino GIGA R1 WiFi
@@ -18,7 +21,8 @@ A simple Arduino GIGA app that connects to Wi‑Fi, pulls recent MLB game data f
 In Arduino IDE, install:
 - `Arduino_GigaDisplay_GFX`
 - `ArduinoJson`
-- `WiFiS3`
+
+No Wi‑Fi TLS library is required for this board.
 
 ## Configuration
 Edit the top of the sketch and set your Wi‑Fi credentials:
@@ -32,9 +36,9 @@ const char* password = "YOUR_WIFI_PASSWORD";
 - `MLB_Scoreboard_Giga/MLB_Scoreboard_Giga.ino`
 
 ## Notes
-- This uses the MLB Stats API endpoint: `https://statsapi.mlb.com/api/v1/schedule`
+- This uses the MLB Stats API endpoint over plain HTTP: `http://statsapi.mlb.com/api/v1/schedule`
 - The app requests games from the last 7 days and displays up to 5 recent games
-- It uses a simple `setInsecure()` TLS connection for quick setup; if you want stricter certificate verification, replace it with a proper cert workflow
+- If you need full secure HTTPS in the future, use a proxy server or switch to a board with TLS support
 
 ## Example behavior
 The display shows rows like:

@@ -1,5 +1,4 @@
-#include <WiFiS3.h>
-#include <WiFiClientSecure.h>
+#include <WiFi.h>
 #include <ArduinoJson.h>
 #include "Arduino_GigaDisplay_GFX.h"
 
@@ -64,11 +63,10 @@ String buildScheduleRequest() {
 }
 
 bool fetchRecentGames(GameScore* games, int& count) {
-  WiFiClientSecure client;
-  client.setInsecure();
+  WiFiClient client;
 
   Serial.println("Requesting MLB schedule");
-  if (!client.connect("statsapi.mlb.com", 443)) {
+  if (!client.connect("statsapi.mlb.com", 80)) {
     Serial.println("Connection failed");
     return false;
   }
@@ -225,8 +223,6 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  configTime(0, 0, "pool.ntp.org");
-
   if (!connectWiFi()) {
     showError("WiFi failed");
     return;
@@ -252,4 +248,3 @@ void loop() {
     drawGames(freshGames, freshCount);
   }
 }
-
